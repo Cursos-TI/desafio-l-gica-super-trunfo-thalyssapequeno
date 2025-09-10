@@ -17,7 +17,7 @@ int main() {
     float area2, pib2;
     int pontosTuristicos2;
 
-    int opcao; // para o menu
+    int opcao1, opcao2; // atributos escolhidos
 
     // Cadastro da Carta 1
     printf("Cadastro da primeira carta:\n");
@@ -65,84 +65,51 @@ int main() {
     printf("Digite o número de pontos turísticos: ");
     scanf("%d", &pontosTuristicos2);
 
-    // Menu de opções
+    // Menu dinâmico - primeiro atributo
     printf("\n--- MENU DE COMPARAÇÃO ---\n");
-    printf("1 - Comparar População\n");
-    printf("2 - Comparar Área\n");
-    printf("3 - Comparar PIB\n");
-    printf("4 - Comparar Pontos Turísticos\n");
-    printf("Escolha uma opção: ");
-    scanf("%d", &opcao);
+    printf("1 - População\n");
+    printf("2 - Área\n");
+    printf("3 - PIB\n");
+    printf("4 - Pontos Turísticos\n");
+    printf("Escolha o PRIMEIRO atributo: ");
+    scanf("%d", &opcao1);
 
-    // Comparações com switch
-    switch (opcao) {
-        case 1: // População
-            printf("\n--- Comparação por População ---\n");
-            if (populacao1 > populacao2) {
-                printf("Carta vencedora: %s (População: %lu)\n", nomeCidade1, populacao1);
-            } else if (populacao2 > populacao1) {
-                printf("Carta vencedora: %s (População: %lu)\n", nomeCidade2, populacao2);
-            } else {
-                // Comparação aninhada (desempate por área)
-                if (area1 > area2) {
-                    printf("Empate na população, venceu %s pelo critério de Área!\n", nomeCidade1);
-                } else if (area2 > area1) {
-                    printf("Empate na população, venceu %s pelo critério de Área!\n", nomeCidade2);
-                } else {
-                    printf("Empate total!\n");
-                }
-            }
-            break;
+    printf("Escolha o SEGUNDO atributo (desempate): ");
+    scanf("%d", &opcao2);
 
-        case 2: // Área
-            printf("\n--- Comparação por Área ---\n");
-            if (area1 > area2) {
-                printf("Carta vencedora: %s (Área: %.2f)\n", nomeCidade1, area1);
-            } else if (area2 > area1) {
-                printf("Carta vencedora: %s (Área: %.2f)\n", nomeCidade2, area2);
-            } else {
-                // Desempate por PIB
-                if (pib1 > pib2) {
-                    printf("Empate na área, venceu %s pelo critério de PIB!\n", nomeCidade1);
-                } else if (pib2 > pib1) {
-                    printf("Empate na área, venceu %s pelo critério de PIB!\n", nomeCidade2);
-                } else {
-                    printf("Empate total!\n");
-                }
-            }
-            break;
+    printf("\n--- Resultado da Comparação ---\n");
 
-        case 3: // PIB
-            printf("\n--- Comparação por PIB ---\n");
-            if (pib1 > pib2) {
-                printf("Carta vencedora: %s (PIB: %.2f)\n", nomeCidade1, pib1);
-            } else if (pib2 > pib1) {
-                printf("Carta vencedora: %s (PIB: %.2f)\n", nomeCidade2, pib2);
-            } else {
-                // Desempate por população
-                if (populacao1 > populacao2) {
-                    printf("Empate no PIB, venceu %s pelo critério de População!\n", nomeCidade1);
-                } else if (populacao2 > populacao1) {
-                    printf("Empate no PIB, venceu %s pelo critério de População!\n", nomeCidade2);
-                } else {
-                    printf("Empate total!\n");
-                }
-            }
-            break;
+    // Função para obter valores dos atributos
+    float valor1A = (opcao1 == 1) ? populacao1 :
+                   (opcao1 == 2) ? area1 :
+                   (opcao1 == 3) ? pib1 : pontosTuristicos1;
 
-        case 4: // Pontos Turísticos
-            printf("\n--- Comparação por Pontos Turísticos ---\n");
-            if (pontosTuristicos1 > pontosTuristicos2) {
-                printf("Carta vencedora: %s (Pontos turísticos: %d)\n", nomeCidade1, pontosTuristicos1);
-            } else if (pontosTuristicos2 > pontosTuristicos1) {
-                printf("Carta vencedora: %s (Pontos turísticos: %d)\n", nomeCidade2, pontosTuristicos2);
-            } else {
-                printf("Empate em pontos turísticos!\n");
-            }
-            break;
+    float valor2A = (opcao1 == 1) ? populacao2 :
+                   (opcao1 == 2) ? area2 :
+                   (opcao1 == 3) ? pib2 : pontosTuristicos2;
 
-        default:
-            printf("Opção inválida!\n");
+    float valor1B = (opcao2 == 1) ? populacao1 :
+                   (opcao2 == 2) ? area1 :
+                   (opcao2 == 3) ? pib1 : pontosTuristicos1;
+
+    float valor2B = (opcao2 == 1) ? populacao2 :
+                   (opcao2 == 2) ? area2 :
+                   (opcao2 == 3) ? pib2 : pontosTuristicos2;
+
+    // Comparação aninhada + ternário
+    if (valor1A > valor2A) {
+        printf("Carta vencedora: %s (atributo principal)\n", nomeCidade1);
+    } else if (valor2A > valor1A) {
+        printf("Carta vencedora: %s (atributo principal)\n", nomeCidade2);
+    } else {
+        // Empate -> usa segundo atributo
+        printf("Empate no atributo principal!\n");
+        printf("Desempate pelo segundo atributo...\n");
+        (valor1B > valor2B) ? 
+            printf("Carta vencedora: %s (atributo secundário)\n", nomeCidade1) :
+            (valor2B > valor1B) ?
+                printf("Carta vencedora: %s (atributo secundário)\n", nomeCidade2) :
+                printf("Empate total!\n");
     }
 
     return 0;
